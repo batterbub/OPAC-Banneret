@@ -9,10 +9,14 @@ import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.lang.reflect.Field;
 
 public class BanneretRenderer implements BlockEntityRenderer<BanneretBlockEntity> {
     private final BannerRenderer bannerRenderer;
@@ -32,32 +36,19 @@ public class BanneretRenderer implements BlockEntityRenderer<BanneretBlockEntity
 
         poseStack.translate(-0.5F, 0.0F, -0.5F);
 
-        DyeColor color = DyeColor.byId(banneretBlockEntity.baseColor);
-
-        // 2) Map DyeColor -> correct banner block
-        BlockState bannerState = switch (color) {
-            case WHITE -> Blocks.WHITE_BANNER.defaultBlockState();
-            case ORANGE -> Blocks.ORANGE_BANNER.defaultBlockState();
-            case MAGENTA -> Blocks.MAGENTA_BANNER.defaultBlockState();
-            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_BANNER.defaultBlockState();
-            case YELLOW -> Blocks.YELLOW_BANNER.defaultBlockState();
-            case LIME -> Blocks.LIME_BANNER.defaultBlockState();
-            case PINK -> Blocks.PINK_BANNER.defaultBlockState();
-            case GRAY -> Blocks.GRAY_BANNER.defaultBlockState();
-            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_BANNER.defaultBlockState();
-            case CYAN -> Blocks.CYAN_BANNER.defaultBlockState();
-            case PURPLE -> Blocks.PURPLE_BANNER.defaultBlockState();
-            case BLUE -> Blocks.BLUE_BANNER.defaultBlockState();
-            case BROWN -> Blocks.BROWN_BANNER.defaultBlockState();
-            case GREEN -> Blocks.GREEN_BANNER.defaultBlockState();
-            case RED -> Blocks.RED_BANNER.defaultBlockState();
-            case BLACK -> Blocks.BLACK_BANNER.defaultBlockState();
-        };
-
         BannerBlockEntity dummy = new BannerBlockEntity(
                 banneretBlockEntity.getBlockPos(),
-                bannerState
+                Blocks.WHITE_BANNER.defaultBlockState(),
+                DyeColor.byId(banneretBlockEntity.baseColor)
         );
+
+        try {
+            Field f = BannerBlockEntity.class.getDeclaredField("patterns");
+            f.setAccessible(true);
+            f.set(dummy, banneretBlockEntity.patterns);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to inject banner patterns", e);
+        }
 
         this.bannerRenderer.render(dummy, partialTick, poseStack, multiBufferSource, packedLight, packedOverlay);
 

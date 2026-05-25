@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.Map;
 
 public class BanneretBlock extends BaseEntityBlock {
@@ -66,15 +65,12 @@ public class BanneretBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        //: Make OPAC claim
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-    }
-
-    @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        //: Remove OPAC claim
-        super.onRemove(state, level, pos, newState, movedByPiston);
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston){
+        if(state.getBlock() != newState.getBlock()) {
+            if(level.getBlockEntity(pos) instanceof  BanneretBlockEntity banneretBlockEntity) {
+                banneretBlockEntity.unClaimAround(level, pos);
+            }
+        }
     }
 
     static {

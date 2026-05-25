@@ -21,6 +21,12 @@ import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import xaero.pac.OpenPartiesAndClaims;
+import xaero.pac.common.server.api.OpenPACServerAPI;
+import xaero.pac.common.server.claims.api.IServerClaimsManagerAPI;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.UUID;
 
 @EventBusSubscriber(modid = BanneretMod.MOD_ID)
 public class BanneretReplaceEvent {
@@ -52,15 +58,14 @@ public class BanneretReplaceEvent {
         BlockEntity newBe = level.getBlockEntity(pos);
         if (!(newBe instanceof BanneretBlockEntity banneret)) return;
 
+        banneret.player = UUID.fromString(event.getEntity().getStringUUID());
+        claimAround(level,pos,event.getEntity());
+
         // Copy banner data
         banneret.setBaseColor(oldBanner.getBaseColor());
+        banneret.setPatterns(oldBanner.getPatterns());
         banneret.setChanged();
         level.sendBlockUpdated(pos, banneret.getBlockState(), banneret.getBlockState(), 3);
-
-        //banneret.setPatterns(oldBanner.getPatterns());
-//        if (oldBanner.hasCustomName()) {
-//            banneret.setCustomName(oldBanner.getCustomName());
-//        }
 
         if (!player.isCreative()) {
             stack.shrink(1);
@@ -70,5 +75,22 @@ public class BanneretReplaceEvent {
 
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
+    }
+
+    public static void claimAround(Level level, BlockPos pos, Player player){
+        IServerClaimsManagerAPI api = OpenPACServerAPI.get(level.getServer()).getServerClaimsManager();
+        int cx = pos.getX() >> 4;
+        int cz = pos.getZ() >> 4;
+        api.tryToClaimArea(
+                level.dimension().location(),
+                player.getUUID(),
+                0,
+                player.chunkPosition().x,
+                player.chunkPosition().z,
+                cx-1,
+                cz-1,
+                cx+1,
+                cz+1,
+                false);
     }
 }
