@@ -17,7 +17,11 @@ public class ModBlocks {
             DeferredRegister.createBlocks(BanneretMod.MOD_ID);
 
     public static DeferredBlock<Block> BANNERET = registerBlock("banneret",
-            () -> new BanneretBlock(BlockBehaviour.Properties.of().noCollission().instabreak().noLootTable()));
+            () -> new BanneretBlock(BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .instabreak()
+                    .forceSolidOn()
+                    .noLootTable()));
 
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

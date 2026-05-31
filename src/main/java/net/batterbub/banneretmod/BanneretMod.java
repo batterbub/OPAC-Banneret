@@ -3,7 +3,9 @@ package net.batterbub.banneretmod;
 import net.batterbub.banneretmod.block.ModBlocks;
 import net.batterbub.banneretmod.block.entity.ModBlockEntities;
 import net.batterbub.banneretmod.component.ModDataComponents;
+import net.batterbub.banneretmod.config.BanneretConfig;
 import net.batterbub.banneretmod.item.ModItems;
+import net.neoforged.fml.ModLoadingContext;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -52,7 +54,7 @@ public class BanneretMod {
         modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, BanneretConfig.COMMON_SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

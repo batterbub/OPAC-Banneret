@@ -1,28 +1,28 @@
 {
   "variants": {
     "facing=down": {
-      "model": "minecraft:block/air",
+      "model": "banneretmod:block/banneret",
       "x": 180
     },
     "facing=east": {
-      "model": "minecraft:block/air",
+      "model": "banneretmod:block/banneret",
       "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "minecraft:block/air",
+      "model": "banneretmod:block/banneret",
       "x": 90
     },
     "facing=south": {
-      "model": "minecraft:block/air",
+      "model": "banneretmod:block/banneret",
       "x": 90,
       "y": 180
     },
     "facing=up": {
-      "model": "minecraft:block/air"
+      "model": "banneretmod:block/banneret"
     },
     "facing=west": {
-      "model": "minecraft:block/air",
+      "model": "banneretmod:block/banneret",
       "x": 90,
       "y": 270
     }

@@ -6,6 +6,8 @@ import net.batterbub.banneretmod.block.ModBlocks;
 import net.batterbub.banneretmod.block.entity.BanneretBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,7 +74,13 @@ public class BanneretReplaceEvent {
             stack.shrink(1);
         }
 
-        level.playSound(null, pos, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS, 1f, 1f);
+        level.addParticle(ParticleTypes.NOTE,
+                pos.getX(),
+                pos.getY(),
+                pos.getZ(),
+                1, 0, 1);
+
+        level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 64f, 1f);
 
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);

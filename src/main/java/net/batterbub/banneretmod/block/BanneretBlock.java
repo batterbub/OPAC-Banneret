@@ -9,6 +9,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -50,6 +52,28 @@ public class BanneretBlock extends BaseEntityBlock {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos below = pos.below();
+        return level.getBlockState(below).isSolid();
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state,
+                                  Direction direction,
+                                  BlockState neighborState,
+                                  LevelAccessor level,
+                                  BlockPos pos,
+                                  BlockPos neighborPos) {
+
+        // If the block below changed and is no longer solid → break the banneret
+        if (direction == Direction.DOWN && !canSurvive(state, level, pos)) {
+            level.destroyBlock(pos, false); // false = no drops
+        }
+
+        return state;
     }
 
     /* Block Entity Stuff */
