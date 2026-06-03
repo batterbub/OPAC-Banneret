@@ -3,6 +3,8 @@ package net.batterbub.banneretmod.block;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
 import net.batterbub.banneretmod.block.entity.BanneretBlockEntity;
+import net.batterbub.banneretmod.config.BanneretConfig;
+import net.batterbub.banneretmod.config.BanneretConfigHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
@@ -92,7 +94,12 @@ public class BanneretBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston){
         if(state.getBlock() != newState.getBlock()) {
             if(level.getBlockEntity(pos) instanceof  BanneretBlockEntity banneretBlockEntity) {
-                banneretBlockEntity.unClaimAround(level, pos);
+                BlockPos belowPos = pos.below();
+                BlockState belowState = level.getBlockState(belowPos);
+                Block belowBlock = belowState.getBlock();
+
+                banneretBlockEntity.unClaimAround(level, pos,
+                        BanneretConfig.COMMON.baseClaimRadius.get() + BanneretConfigHandler.BLOCK_RADIUS_MAP.getOrDefault(belowBlock, 0));
             }
         }
     }

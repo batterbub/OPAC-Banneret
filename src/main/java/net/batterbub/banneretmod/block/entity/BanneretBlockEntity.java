@@ -48,20 +48,23 @@ public class BanneretBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
-    public void unClaimAround(Level level, BlockPos pos){
+    public void unClaimAround(Level level, BlockPos pos, int radius){
         IServerClaimsManagerAPI api = OpenPACServerAPI.get(level.getServer()).getServerClaimsManager();
         int cx = pos.getX() >> 4;
         int cz = pos.getZ() >> 4;
-        api.tryToUnclaimArea(
-                level.dimension().location(),
-                player,
-                cx,
-                cz,
-                cx-1,
-                cz-1,
-                cx+1,
-                cz+1,
-                false);
+        for (int x = cx - radius; x <= cx + radius; x++) {
+            for (int z = cz - radius; z <= cz + radius; z++) {
+
+                var result = api.tryToUnclaim(
+                        level.dimension().location(),
+                        player,
+                        cx, cz,   // "from" chunk (center)
+                        x, z,     // chunk to claim
+                        false
+                );
+            }
+        }
+        //int debug = 1; //Only uncomment if you need to check result.
     }
 
     @Override

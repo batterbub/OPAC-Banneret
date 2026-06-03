@@ -2,10 +2,9 @@ package net.batterbub.banneretmod;
 
 import net.batterbub.banneretmod.block.ModBlocks;
 import net.batterbub.banneretmod.block.entity.ModBlockEntities;
-import net.batterbub.banneretmod.component.ModDataComponents;
 import net.batterbub.banneretmod.config.BanneretConfig;
+import net.batterbub.banneretmod.config.BanneretConfigHandler;
 import net.batterbub.banneretmod.item.ModItems;
-import net.neoforged.fml.ModLoadingContext;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -46,8 +45,6 @@ public class BanneretMod {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
 
-        ModDataComponents.register(modEventBus);
-
         ModBlockEntities.register(modEventBus);
 
         // Register the item to a creative tab
@@ -55,11 +52,12 @@ public class BanneretMod {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, BanneretConfig.COMMON_SPEC);
+        modEventBus.addListener(BanneretConfigHandler::onConfigReload);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
-
+        BanneretConfigHandler.reloadMappings();
     }
 
     // Add the example block item to the building blocks tab
