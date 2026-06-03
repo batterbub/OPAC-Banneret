@@ -1,25 +1,24 @@
 
-Installation information
+batterbub's OPAC Bannerets
 =======
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+This addon to Open Parties and Claims by xaero96 aims to add a vanilla way to claim land using banners.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+Players can now convert banners into bannerets by using a glowing ink sac on them. This claims a chunk radius around the banneret.
+Breaking the banneret unclaims the chunks. By converting banners on top of certain blocks, you can increase the claim radius.
+By default, banners claim one chunk, banners on top of campfires claim two, anvils three, and beacons four (but this is customizable by the config).
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+To get the full effect, it's recommended that you reduce the max claims in OPAC's config to zero. 
+This is because I could not find a way to force players to not use the mod's menu or Xaero's Worldmap.
+If this changes I will change this, however take note server claims work in the meantime. 
 
-Mapping Names:
+As it stands now this mod is still in development for my own personal use, however I hope you enjoy!
+
+Planned Things:
 ============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+These are some things I hope to be able to do, however I'm not that smart so future me better try his best. Nothing is promised, this is more of a concept art deal listed in order of most-least likely.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+* Raid mechanics: other players can launch raids to try to claim or free the area. (configurable)
+* Limited bannerets: limit the number of bannerets players can use. (configurable)
+* Land colors: change the land claim coloring through colorpools (configurable)
+* Party branding: allow players to "upload" banners to be used when converting other banners. 
